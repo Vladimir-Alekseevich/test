@@ -5,3 +5,5 @@
 oper3
 
 operation merge
+
+duble2
