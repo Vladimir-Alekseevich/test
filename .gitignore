@@ -1,1 +1,4 @@
-# Error
+# Ignore files
+*.pyc
+# Ignore folder
+cache/
