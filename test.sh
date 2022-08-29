@@ -14,9 +14,4 @@ vrode ok
 op8
 
 op9
-<<<<<<< ours
 conflict branch1
-||||||| base
-=======
-conflict branch3
->>>>>>> theirs
