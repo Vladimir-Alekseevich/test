@@ -14,8 +14,4 @@ vrode ok
 op8
 
 op9
-<<<<<<< HEAD
-conflict branch1
-=======
 conflict branch333
->>>>>>> conflict
