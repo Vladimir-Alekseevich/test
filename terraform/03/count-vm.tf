@@ -2,7 +2,7 @@ resource "yandex_compute_instance" "example" {
   name        = "netology-develop-platform-web-${count.index}"
   platform_id = "standard-v1"
 
-  count = 2
+  count = 1
 
   resources {
     cores  = 2
@@ -29,4 +29,11 @@ resource "yandex_compute_instance" "example" {
     nat       = true
   }
   allow_stopping_for_update = true
+}
+
+resource "yandex_compute_disk" "secondary_disk" {
+	count = var.instance_count
+	name = "secdisk0-${count.index}"
+	type = "network-hdd"
+	size = 1
 }

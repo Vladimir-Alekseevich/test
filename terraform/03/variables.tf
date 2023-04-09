@@ -42,3 +42,8 @@ variable "public_key" {
   default     = "~/.ssh/id_rsa.pub"
   description = "ssh-keygen -t ed25519"
 }
+
+variable "instance_count" {
+    type = number
+    default = 3
+}
