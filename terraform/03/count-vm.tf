@@ -13,6 +13,7 @@ resource "yandex_compute_instance" "example" {
   boot_disk {
     initialize_params {
       image_id = data.yandex_compute_image.ubuntu.image_id
+      name = "first"
       type = "network-hdd"
       size = 5
     }
@@ -21,7 +22,7 @@ resource "yandex_compute_instance" "example" {
   dynamic "secondary_disk" {
     for_each = var.volumes
     content {
-      disk_id     = yandex_compute_disk.volume[secondary_disk.name].id
+      disk_id     = yandex_compute_disk.secondary_disk[count.index].id
       }
   }
 
@@ -36,12 +37,4 @@ resource "yandex_compute_instance" "example" {
     nat       = true
   }
   allow_stopping_for_update = true
-}
-
-resource "yandex_compute_disk" "secondary_disk" {
-	count = var.instance_count
-	name = "secdisk0-${count.index}"
-	type = "network-hdd"
-	size = var.secondary_disk
-#	id = "count-${count.index}"
 }
