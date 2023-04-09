@@ -15,3 +15,10 @@ resource "yandex_vpc_subnet" "develop" {
  data "yandex_compute_image" "ubuntu" {
   family = "ubuntu-2004-lts"
 }
+
+resource "yandex_compute_disk" "secondary_disk" {
+  count = var.instance_count
+      name = "secdisk-${count.index}"
+      type = "network-hdd"
+      size = var.secondary_disk
+}
