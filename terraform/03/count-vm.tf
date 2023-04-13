@@ -18,12 +18,23 @@ resource "yandex_compute_instance" "example" {
       size = 5
     }
   }
+/*
+ [ for <ITEM> in <LIST> : <OUTPUT_KEY> => <OUTPUT_VALUE> ]
+ for_each = {for vm in var.vm: vm.name => vm}
 
   dynamic "secondary_disk" {
-    for_each = var.volumes
+    for_each = {name = secdisk-${count.index}}
     content {
-      disk_id     = yandex_compute_disk.secondary_disk[count.index].id
+      disk_id     = yandex_compute_disk.${each.value}.id
       }
+  }
+*/
+  dynamic "secondary_disk" {
+    for_each = lookup(each.value, "secondary_disk")
+    content {
+      disk_id = yandex_compute_disk.vm-disk.id
+      auto_delete = true
+    }
   }
 
   metadata = {
@@ -37,4 +48,11 @@ resource "yandex_compute_instance" "example" {
     nat       = true
   }
   allow_stopping_for_update = true
+}
+
+resource "yandex_compute_disk" "secondary_disk" {
+  count = var.instance_count
+      name = "secdisk-${count.index}"
+      type = "network-hdd"
+      size = var.secondary_disk
 }

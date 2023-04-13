@@ -1,15 +1,12 @@
 resource "yandex_compute_instance" "vm" {
-  for_each = {
-    "vm1" = { var.vm.cpu = "4", var.vm.ram = "2", var.vm.disk = "5" }
-    "vm2" = { var.vm.cpu = "2", var.vm.ram = "1", var.vm.disk = "7" }
- }
+  for_each = {for vm in var.vm: vm.name => vm}
 
-  name = each.key
+  name = "${each.value.name}"
   platform_id = "standard-v1"
 
   resources {
-    cores  = each.value.vm_cpu
-    memory = each.value.vm_ram
+    cores  = "${each.value.cpu}"
+    memory = "${each.value.ram}"
     core_fraction = 20
   }
 
@@ -17,7 +14,7 @@ resource "yandex_compute_instance" "vm" {
     initialize_params {
       image_id = data.yandex_compute_image.ubuntu.image_id
       type = "network-hdd"
-      size = each.value.vm_disk
+      size = "${each.value.disk}"
     }
   }
 

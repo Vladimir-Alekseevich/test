@@ -52,7 +52,7 @@ variable "secondary_disk" {
 	type = number
     default = 1
 }
-
+/*
 variable "volumes" {
   default = [
     {
@@ -66,7 +66,7 @@ variable "volumes" {
     }
   ]
 }
-/*
+*/
 variable "vm" {
   description = "List of VMs with specified parameters"
   type = list(object({
@@ -75,5 +75,18 @@ variable "vm" {
     ram  = number,
     disk = number
   }))
+  default = [
+     {
+    name = "vm1"
+    cpu  = 2
+    ram  = 1
+    disk = 5
+  },
+  {
+    name = "vm2"
+    cpu  = 4
+    ram  = 2
+    disk = 6
+  }
+]
 }
-*/
