@@ -18,24 +18,15 @@ resource "yandex_compute_instance" "example" {
       size = 5
     }
   }
-/*
- [ for <ITEM> in <LIST> : <OUTPUT_KEY> => <OUTPUT_VALUE> ]
- for_each = {for vm in var.vm: vm.name => vm}
-
+  
   dynamic "secondary_disk" {
-    for_each = {name = secdisk-${count.index}}
+    for_each = yandex_compute_disk.virtual_disk
     content {
-      disk_id     = yandex_compute_disk.${each.value}.id
-      }
-  }
-*/
-  dynamic "secondary_disk" {
-    for_each = lookup(each.value, "secondary_disk")
-    content {
-      disk_id = yandex_compute_disk.vm-disk.id
-      auto_delete = true
+      device_name = "disk-${secondary_disk.key}"
+      disk_id     = yandex_compute_disk.virtual_disk[secondary_disk.key].id
     }
   }
+
 
   metadata = {
     ssh-keys = "ubuntu:${file(var.public_key)}"
