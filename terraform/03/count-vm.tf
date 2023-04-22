@@ -18,15 +18,14 @@ resource "yandex_compute_instance" "example" {
       size = 5
     }
   }
-  
+
   dynamic "secondary_disk" {
-    for_each = yandex_compute_disk.virtual_disk
+    for_each = yandex_compute_disk.secondary_disk
     content {
-      device_name = "disk-${secondary_disk.key}"
-      disk_id     = yandex_compute_disk.virtual_disk[secondary_disk.key].id
+      device_name = "virtual_disk_${secondary_disk.key}"
+      disk_id     = yandex_compute_disk.secondary_disk[secondary_disk.key].id
     }
   }
-
 
   metadata = {
     ssh-keys = "ubuntu:${file(var.public_key)}"
@@ -43,7 +42,7 @@ resource "yandex_compute_instance" "example" {
 
 resource "yandex_compute_disk" "secondary_disk" {
   count = var.instance_count
-      name = "secdisk-${count.index}"
+      name = "virtual_disk_${count.index}"
       type = "network-hdd"
-      size = var.secondary_disk
+      size = 1
 }
